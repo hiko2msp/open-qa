@@ -19,8 +19,7 @@ def crc():
             response_token='sha256=' + base64.b64encode(sha256_hash_digest)
         )
     except Exception as e:
-        print(e)
-        return 'error'
+        return 'error' + str(e)
 
 if __name__ == '__main__':
     app.run()
