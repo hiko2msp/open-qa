@@ -12,11 +12,15 @@ APP_CONSUMER_SECRET = os.environ.get('CONSUMER_SECRET', 'dummy secret')
 
 @app.route('/', methods=['GET'])
 def crc():
-    crc_token = request.args['crc_token']
-    sha256_hash_digest = hmac.new(APP_CONSUMER_SECRET, msg=crc_token, digestmod=hashlib.sha256).digest()
-    return jsonify(
-        response_token='sha256=' + base64.base64.b64encode(sha256_hash_digest)
-    )
+    try:
+        crc_token = request.args['crc_token']
+        sha256_hash_digest = hmac.new(APP_CONSUMER_SECRET, msg=crc_token, digestmod=hashlib.sha256).digest()
+        return jsonify(
+            response_token='sha256=' + base64.b64encode(sha256_hash_digest)
+        )
+    except Exception as e:
+        print(e)
+        return 'error'
 
 if __name__ == '__main__':
     app.run()
