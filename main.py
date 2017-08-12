@@ -14,10 +14,10 @@ APP_CONSUMER_SECRET = os.environ.get('CONSUMER_SECRET', 'dummy secret').encode()
 def crc():
     crc_token = request.args['crc_token'].encode()
     print(crc_token)
-    sha256_hash_digest = hmac.new(APP_CONSUMER_SECRET, msg=crc_token, digestmod=hashlib.sha256).hexdigest()
+    sha256_hash_digest = hmac.new(APP_CONSUMER_SECRET, msg=crc_token, digestmod=hashlib.sha256).digest()
     print(sha256_hash_digest)
     return jsonify(
-        response_token=(b'sha256=' + base64.b64encode(sha256_hash_digest.encode())).decode()
+        response_token=(b'sha256=' + base64.b64encode(sha256_hash_digest)).decode()
     )
 
 if __name__ == '__main__':
