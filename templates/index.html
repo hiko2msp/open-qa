@@ -4,25 +4,49 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script>
+      $(function() {
+        $('#send').click(function() {
+          $('#result').text("");
+
+          $.ajax({
+            type: "POST",
+            url: "/post",
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(result) {
+              console.log('ok');
+              $('#result').text(result.message);
+            },
+            error: function() {
+              console.log('error');
+            }
+          });
+        });
+      });
+    </script>
   </head>
   <body>
     <div class="container">
       <div class="header">
         <h3>パターン登録</h3>
-        {{ message }}
-        <table>
-          {% for pattern in reply_pattern_dict %}
-          <tr>
-            <td>{{ pattern }}</td>
-            {% for key, value in reply_pattern_dict[pattern].items() %}
-            <td>{{ value }}</td>
-            {% endfor %}
-          </tr>
+
+        <div id="result"></div>
+
+        {% for pattern in reply_pattern_dict %}
+        <div class="row">
+          <div class="col-3">{{ pattern }}</div>
+          {% for key, value in reply_pattern_dict[pattern].items() %}
+          <div class="col-3">{{ value }}</div>
           {% endfor %}
-        </table>
+          <span class="glyphicon glyphicon-plus green"></span>
+          <span class="glyphicon glyphicon-minus red"></span>
+        </div>
+        {% endfor %}
           
       </div>
     </div>
