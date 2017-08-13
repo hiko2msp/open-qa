@@ -39,12 +39,12 @@
 
         {% for pattern in reply_pattern_dict %}
         <div class="row">
-          <div class="col-3">{{ pattern }}</div>
+          <div class="col-xs-3">{{ pattern }}</div>
           {% for key, value in reply_pattern_dict[pattern].items() %}
-          <div class="col-3">{{ value }}</div>
+          <div class="col-xs-3">{{ value }}</div>
           {% endfor %}
-          <span class="glyphicon glyphicon-plus" style="color:green" ></span>
-          <span class="glyphicon glyphicon-minus red"></span>
+          <span class="glyphicon glyphicon-plus col-xs-1" style="color:green" ></span>
+          <span class="glyphicon glyphicon-minus col-xs-1" style="color:red" ></span>
         </div>
         {% endfor %}
           
