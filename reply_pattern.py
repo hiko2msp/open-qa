@@ -9,10 +9,13 @@ class ReplyPattern():
             self.pattern = json.load(f)
 
     def add_pattern(self, match, reply_text):
-        
         self.pattern[match] = {
             'reply_text': reply_text
         }
+
+    def delete_pattern(self, match):
+        if self.pattern.get(match):
+            del self.pattern[match]
 
     def get_reply_messages(self, message_text):
         match_value_list = []

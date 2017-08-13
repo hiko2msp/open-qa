@@ -9,7 +9,9 @@ from flask import (
     request,
     jsonify,
     send_from_directory,
-    render_template
+    render_template,
+    redirect,
+    url_for,
 )
 
 app = Flask(__name__)
@@ -33,18 +35,22 @@ reply_pattern = ReplyPattern()
 def index():
     render_object = {
         'message': 'テストメッセージ',
+        'reply_pattern_dict': reply_pattern.get_pattern()
     }
     return render_template('index.html', **render_object)
 
 @app.route('/add', methods=['POST'])
 def add():
-    # reply_pattern.add_pattern()
-    return '', 201
+    match_pattern = request.form['match_pattern']
+    value = request.form['value']
+    reply_pattern.add_pattern(match_pattern, value)
+    return '', 200
 
 @app.route('/delete', methods=['POST'])
 def delete():
-    # reply_pattern.delete_pattern()
-    return '', 201
+    match_pattern = request.form['match_pattern']
+    reply_pattern.delete_pattern(match_pattern)
+    return '', 200
 
 @app.route('/content')
 def content():
@@ -57,5 +63,9 @@ def content():
 def send_js(path):
     return send_from_directory('js', path)
 
+@app.route('/favicon.ico')
+def send_js(path):
+    return send_from_directory('images', 'favicon.png')
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port='9006')
