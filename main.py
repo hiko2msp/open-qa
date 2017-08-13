@@ -31,10 +31,15 @@ def event():
     return str(request.args)
 
 from reply_pattern import ReplyPattern
+reply_pattern = ReplyPattern()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    render_object = {
+        'message': 'テストメッセージ',
+        'reply_pattern_dict': reply_pattern.get_pattern()
+    }
+    return render_template('index.html', **render_object)
 
 @app.route('/js/<path:path>')
 def send_js(path):

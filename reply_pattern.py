@@ -3,12 +3,10 @@
 import json
 
 class ReplyPattern():
-    def __init__(self, filename=None):
-        if filename is None: 
-            self.pattern = {}
-        else:
-            with open(filename) as f:
-                self.pattern = json.load(f)
+    def __init__(self, filename='data/pattern.json'):
+        self.filename = filename
+        with open(filename) as f:
+            self.pattern = json.load(f)
 
     def add_pattern(self, match, reply_text):
         
@@ -24,6 +22,13 @@ class ReplyPattern():
 
         return match_value_list
 
+    def get_pattern(self):
+        return self.pattern
+
+    def save(self):
+        with open(self.filename, 'w') as f:
+            f.write(json.dumps(self.pattern, indent=2, ensure_ascii=False))
+        
     @staticmethod
     def is_match(match_pattern, text):
         return match_pattern in text

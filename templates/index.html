@@ -12,6 +12,18 @@
     <div class="container">
       <div class="header">
         <h3>パターン登録</h3>
+        {{ message }}
+        <table>
+          {% for pattern in reply_pattern_dict %}
+          <tr>
+            <td>{{ pattern }}</td>
+            {% for key, value in reply_pattern_dict[pattern].items() %}
+            <td>{{ value }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </table>
+          
       </div>
     </div>
   </body>
