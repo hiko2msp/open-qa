@@ -33,14 +33,22 @@ reply_pattern = ReplyPattern()
 def index():
     render_object = {
         'message': 'テストメッセージ',
-        'reply_pattern_dict': reply_pattern.get_pattern()
     }
     return render_template('index.html', **render_object)
 
 @app.route('/add', methods=['POST'])
 def add():
+    # reply_pattern.add_pattern()
+    return '', 201
+
+@app.route('/delete', methods=['POST'])
+def delete():
+    # reply_pattern.delete_pattern()
+    return '', 201
+
+@app.route('/content')
+def content():
     render_object = {
-        'message': 'テストメッセージ',
         'reply_pattern_dict': reply_pattern.get_pattern()
     }
     return render_template('index.html', **render_object)

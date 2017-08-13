@@ -1,0 +1,12 @@
+{% for pattern in reply_pattern_dict %}
+<div class="row" style="border: 1px solid black" >
+  <div class="col-xs-3">{{ pattern }}</div>
+  {% for key, value in reply_pattern_dict[pattern].items() %}
+  <div class="col-xs-3">{{ value }}</div>
+  {% endfor %}
+  <span class="glyphicon glyphicon-minus col-xs-1 delete-btn" style="color:red" ></span>
+</div>
+{% endfor %}
+<div class="row">
+  <span class="glyphicon glyphicon-plus col-xs-1 add-btn" style="color:green" ></span>
+</div>

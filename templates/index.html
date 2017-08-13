@@ -9,18 +9,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
       $(function() {
-        $('#send').click(function() {
-          $('#result').text("");
-
+        $('.add-btn').click(function(event) {
           $.ajax({
             type: "POST",
-            url: "/post",
+            url: "/add",
             dataType: 'json',
             processData: false,
             contentType: false,
             success: function(result) {
               console.log('ok');
-              $('#result').text(result.message);
+              $('#pattern_list').html(result.message);
+            },
+            error: function() {
+              console.log('error');
+            }
+          });
+        });
+        $('.delete-btn').click(function(event) {
+          $.ajax({
+            type: "POST",
+            url: "/delete",
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(result) {
+              console.log('ok');
+              $('#pattern_list').html(result.message);
             },
             error: function() {
               console.log('error');
@@ -36,17 +50,20 @@
         <h3>パターン登録</h3>
 
         <div id="result"></div>
-
-        {% for pattern in reply_pattern_dict %}
-        <div class="row">
-          <div class="col-xs-3">{{ pattern }}</div>
-          {% for key, value in reply_pattern_dict[pattern].items() %}
-          <div class="col-xs-3">{{ value }}</div>
+        <div id="pattern_list">
+          {% for pattern in reply_pattern_dict %}
+          <div class="row" style="border: 1px solid black" >
+            <div class="col-xs-3">{{ pattern }}</div>
+            {% for key, value in reply_pattern_dict[pattern].items() %}
+            <div class="col-xs-3">{{ value }}</div>
+            {% endfor %}
+            <span class="glyphicon glyphicon-minus col-xs-1 delete-btn" style="color:red" ></span>
+          </div>
           {% endfor %}
-          <span class="glyphicon glyphicon-plus col-xs-1" style="color:green" ></span>
-          <span class="glyphicon glyphicon-minus col-xs-1" style="color:red" ></span>
+          <div class="row">
+            <span class="glyphicon glyphicon-plus col-xs-1 add-btn" style="color:green" ></span>
+          </div>
         </div>
-        {% endfor %}
           
       </div>
     </div>
