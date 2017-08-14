@@ -3,7 +3,7 @@ import os
 import base64
 import hmac
 import hashlib
-
+from slack.run import main
 from flask import (
     Flask,
     request,
@@ -75,6 +75,41 @@ def send_js(path):
 @app.route('/favicon.ico')
 def send_image(path):
     return send_from_directory('images', 'favicon.png')
+
+import sys
+import logging
+import multiprocessing
+multiprocessing.log_to_stderr(logging.DEBUG)
+sys.path.append('./slack')
+from slackbot_settings import API_TOKEN
+
+class BotManager():
+    def __init__(self):
+        self.p = None
+
+
+    def start(self):
+        if self.p is None:
+            self.p = multiprocessing.Process(target=main, daemon=True)
+            self.p.start() 
+
+    def stop(self):
+        self.p.terminate()
+        self.p.join()
+        self.p = None
+
+    def is_active(self):
+        return self.p is not None
+
+bot_manager = BotManager()
+
+@app.route('/trigger', methods=['POST'])
+def trigger_bot():
+    if bot_manager.is_active():
+        bot_manager.stop()
+    else:
+        bot_manager.start()
+    return jsonify({'status': 200}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='9006')
