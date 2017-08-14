@@ -4,9 +4,28 @@
   {% for key, value in reply_pattern_dict[pattern].items() %}
   <div class="col-xs-3">{{ value }}</div>
   {% endfor %}
-  <span class="glyphicon glyphicon-minus col-xs-1 delete-btn" style="color:red" ></span>
+  <div class="col-xs-1">
+    <form>
+      <input type="hidden" name="match_pattern" value="{{pattern}}" >
+      <button type="submit" class="delete-btn form-control" style="background: none; padding: 0px; border: none; -webkit-box-shadow: none; box-shadow: none;">
+        <i class="glyphicon glyphicon-minus" style="color:red" ></i>
+      </button>
+    </form>
+  </div>
 </div>
 {% endfor %}
 <div class="row">
-  <span class="glyphicon glyphicon-plus col-xs-1 add-btn" style="color:green" ></span>
+  <form class="add-form">
+    <div class="col-xs-3 form-group">
+      <input type="text" class="form-control" name="match_pattern" >
+    </div>
+    <div class="col-xs-3 form-group">
+      <input type="text" class="form-control" name="reply_text" >
+    </div>
+    <div class="col-xs-1 form-group">
+      <button type="submit" class="col-xs-1 add-btn form-control" style="background: none; padding: 0px; border: none; -webkit-box-shadow: none; box-shadow: none;">
+        <i class="glyphicon glyphicon-plus" style="color:green" ></i>
+      </button>
+    </div>
+  </form>
 </div>

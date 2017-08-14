@@ -12,51 +12,50 @@
         $.ajax({
           type: "GET",
           url: "/content",
-          dataType: 'json',
+          dataType: 'html',
           processData: false,
           contentType: false,
-          success: function(result) {
-            console.log('content ok');
-            $('#pattern_list').html(result.message);
-          },
-          error: function(result) {
-            console.log('content error');
-            console.log(result);
-          }
+        }).done(function(data) {
+          console.log('content ok');
+          $('#pattern_list').html(data);
+        }).fail(function(data, textStatus, errorThrown) {
+          console.log('content error');
         });
       };
       getContent();
       $(function() {
-        $('.add-btn').click(function(event) {
+        $(document).on('click', '.add-btn', function(event) {
+          event.preventDefault();
+          console.log('add clicked');
           $.ajax({
             type: "POST",
             url: "/add",
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function(result) {
-              console.log('add ok');
-              getContent();
-            },
-            error: function() {
-              console.log('add error');
-            }
+            data: $('form.add-form').serialize(),
+          }).done(function(data) {
+            console.log('add ok');
+            getContent();
+          }).fail(function(data, textStatus, errorThrown) {
+            console.log('add error');
+            console.log(data);
+            console.log(textStatus);
+            console.log(errorThrown);
           });
         });
-        $('.delete-btn').click(function(event) {
+        $(document).on('click', '.delete-btn', function(event) {
+          event.preventDefault();
+          console.log('delete clicked');
           $.ajax({
             type: "POST",
             url: "/delete",
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function(result) {
-              console.log('delete ok');
-              getContent();
-            },
-            error: function() {
-              console.log('delete error');
-            }
+            data: $(this).parent().serialize(),
+          }).done(function(data) {
+            console.log('delete ok');
+            getContent();
+          }).fail(function(data, textStatus, errorThrown) {
+            console.log('add error');
+            console.log(data);
+            console.log(textStatus);
+            console.log(errorThrown);
           });
         });
       });
