@@ -41,17 +41,24 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add():
+    print('add start')
     match_pattern = request.form['match_pattern']
+    print(match_pattern)
     value = request.form['reply_text']
+    print(value)
     reply_pattern.add_pattern(match_pattern, value)
     reply_pattern.save()
+    print('save finished')
     return jsonify({'status': 200}), 200
 
 @app.route('/delete', methods=['POST'])
 def delete():
+    print('delete start')
     match_pattern = request.form['match_pattern']
+    print(match_pattern)
     reply_pattern.delete_pattern(match_pattern)
     reply_pattern.save()
+    print('save finished')
     return jsonify({'status': 200}), 200
 
 @app.route('/content')
