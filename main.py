@@ -98,12 +98,16 @@ class BotManager():
     def stop(self):
         print('before terminate')
         print(self.p.is_alive(), self.p.exitcode, self.p.pid)
+        print('try terminate')
         self.p.terminate()
-        result = self.p.join(10)
-        print('after terminate')
+        result = self.p.join(0.5)
         print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
         if self.p.exitcode is None:
+            print('try terminate failed once')
+            print('try terminate again')
             os.system('kill -9 {}'.format(self.p.pid))
+            result = self.p.join(0.5)
+            print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
             if self.p.exitcode is None:
                 raise Exception('terminate process failed')
         if not self.p.is_alive():
