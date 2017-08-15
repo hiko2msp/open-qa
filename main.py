@@ -102,6 +102,8 @@ class BotManager():
         result = self.p.join(10)
         print('after terminate')
         print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
+        if self.p.exitcode is None:
+            raise Exception('terminate process failed')
         if not self.p.is_alive():
             self.p = None
 
