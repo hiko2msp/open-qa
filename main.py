@@ -98,15 +98,12 @@ class BotManager():
     def stop(self):
         print('before terminate')
         print(self.p.is_alive(), self.p.exitcode, self.p.pid)
-        try:
-            self.p.terminate()
-            result = self.p.join()
-            print('after terminate')
-            print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
-            if not self.p.is_alive():
-                self.p = None
-        except Exception as e:
-            print(e)
+        self.p.terminate()
+        result = self.p.join(10)
+        print('after terminate')
+        print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
+        if not self.p.is_alive():
+            self.p = None
 
     def is_active(self):
         return self.p is not None
@@ -116,7 +113,11 @@ bot_manager = BotManager()
 @app.route('/trigger', methods=['POST'])
 def trigger_bot():
     if bot_manager.is_active():
-        bot_manager.stop()
+        try:
+            bot_manager.stop()
+        except Exception as e:
+            print(e)
+            return jsonify({'status': 500}), 500
     else:
         bot_manager.start()
     return jsonify({'status': 200}), 200
