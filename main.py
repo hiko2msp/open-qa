@@ -96,10 +96,17 @@ class BotManager():
             print(self.p.is_alive())
 
     def stop(self):
-        self.p.close()
-        self.p.join()
-        print(self.p.is_alive())
-        self.p = None
+        print('before terminate')
+        print(self.p.is_alive(), self.p.exitcode, self.p.pid)
+        self.p.terminate()
+        try:
+            result = self.p.join(1)
+            print('after terminate')
+            print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
+            self.p = None
+        except multiprocessing.TimeoutError as e:
+            print(e)
+            print('terminate failed')
 
     def is_active(self):
         return self.p is not None
