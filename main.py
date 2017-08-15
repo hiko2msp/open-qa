@@ -13,6 +13,7 @@ from flask import (
     redirect,
     url_for,
 )
+import html
 
 app = Flask(__name__)
 
@@ -42,9 +43,9 @@ def index():
 @app.route('/add', methods=['POST'])
 def add():
     print('add start')
-    match_pattern = request.form['match_pattern']
+    match_pattern = html.escape(request.form['match_pattern'])
     print(match_pattern)
-    value = request.form['reply_text']
+    value = html.escape(request.form['reply_text'])
     print(value)
     reply_pattern.add_pattern(match_pattern, value)
     reply_pattern.save()
@@ -90,7 +91,7 @@ class BotManager():
 
     def start(self):
         if self.p is None:
-            self.p = multiprocessing.Process(target=main, daemon=True)
+            self.p = multiprocessing.Process(target=main)
             self.p.start() 
 
     def stop(self):
