@@ -98,12 +98,15 @@ class BotManager():
     def stop(self):
         print('before terminate')
         print(self.p.is_alive(), self.p.exitcode, self.p.pid)
-        self.p.terminate()
-        result = self.p.join()
-        print('after terminate')
-        print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
-        if not self.p.is_alive():
-            self.p = None
+        try:
+            self.p.terminate()
+            result = self.p.join()
+            print('after terminate')
+            print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
+            if not self.p.is_alive():
+                self.p = None
+        except Exception as e:
+            print(e)
 
     def is_active(self):
         return self.p is not None
