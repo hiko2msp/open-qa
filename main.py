@@ -93,10 +93,12 @@ class BotManager():
         if self.p is None:
             self.p = multiprocessing.Process(target=main)
             self.p.start() 
+            print(self.p.is_alive())
 
     def stop(self):
         self.p.terminate()
         self.p.join()
+        print(self.p.is_alive())
         self.p = None
 
     def is_active(self):
