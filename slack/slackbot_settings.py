@@ -1,6 +1,7 @@
 # coding: utf-8
+import os
 
-API_TOKEN = "xoxb-222719972373-ZYSqQUw3V3oCiXwr27DBmAur"
+API_TOKEN = os.environ['API_TOKEN']
 
 DEFAULT_REPLY = "ごきげんよう"
 
