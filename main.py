@@ -96,7 +96,7 @@ class BotManager():
             print(self.p.is_alive())
 
     def stop(self):
-        self.p.terminate()
+        self.p.close()
         self.p.join()
         print(self.p.is_alive())
         self.p = None
