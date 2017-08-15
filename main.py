@@ -93,7 +93,7 @@ class BotManager():
         if self.p is None:
             self.p = multiprocessing.Process(target=main)
             self.p.start() 
-            print(self.p.is_alive())
+            print(self.p.is_alive(), os.getpid(), self.p.pid)
 
     def stop(self):
         print('before terminate')
