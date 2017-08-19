@@ -22,4 +22,4 @@ def patern_match(message):
     if match_result is not None:
         message.send(match_result['reply_text'])
     else:
-        message.send('よくわからないが、多分そうでござる')
+        message.send('？')
