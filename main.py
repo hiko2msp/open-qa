@@ -77,45 +77,7 @@ def send_js(path):
 def send_image(path):
     return send_from_directory('images', 'favicon.png')
 
-import sys
-import logging
-import multiprocessing
-multiprocessing.log_to_stderr(logging.DEBUG)
-sys.path.append('./slack')
-from slackbot_settings import API_TOKEN
-
-class BotManager():
-    def __init__(self):
-        self.p = None
-
-
-    def start(self):
-        if not self.is_active():
-            self.p = multiprocessing.Process(target=main)
-            self.p.start() 
-            print(self.p.is_alive(), os.getpid(), self.p.pid)
-
-    def stop(self):
-        print('before terminate')
-        print(self.p.is_alive(), self.p.exitcode, self.p.pid)
-        print('try terminate')
-        self.p.terminate()
-        result = self.p.join(0.5)
-        print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
-        if self.p.exitcode is None:
-            print('try terminate failed once')
-            print('try terminate again')
-            os.system('kill -9 {}'.format(self.p.pid))
-            result = self.p.join(0.5)
-            print(self.p.is_alive(), self.p.exitcode, self.p.pid, result)
-            if self.p.exitcode is None:
-                raise Exception('terminate process failed')
-        if not self.p.is_alive():
-            self.p = None
-
-    def is_active(self):
-        return self.p is not None
-
+from slack.run import BotManager
 bot_manager = BotManager()
 
 @app.route('/trigger', methods=['POST'])
