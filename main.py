@@ -3,7 +3,6 @@ import os
 import base64
 import hmac
 import hashlib
-from slack.run import main
 from flask import (
     Flask,
     request,
