@@ -1,8 +1,9 @@
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from slackbot_settings import API_TOKEN
+import slackbot_settings
 from slackbot.bot import Bot
+import importlib
 
 def main():
     bot = Bot()
@@ -19,6 +20,9 @@ class BotManager():
 
 
     def start(self):
+        importlib.reload(slackbot_settings)
+        print(slackbot_settings.API_TOKEN)
+        print(os.environ['API_TOKEN'])
         if not self.is_active():
             self.p = multiprocessing.Process(target=main)
             self.p.start()

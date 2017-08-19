@@ -1,14 +1,27 @@
+<h4>基本情報登録</h4>
+<div class="row">
+  <form>
+    <div class="col-xs-7 form-group">
+      <input type="text" class="form-control" name="slack_api_token" placeholder="APIトークン" >
+    </div>
+    <div class="col-xs-3 form-group">
+      <button type="submit form-control" class="register-btn">登録</button>
+    </div>
+  </form>
+</div>
+
+<h4>パターン一覧</h4>
 {% for pattern in reply_pattern_dict %}
-<div class="row" style="border: 1px solid black" >
-  <div class="col-xs-3">{{ pattern }}</div>
+<div class="row pattern-list" >
+  <div class="col-xs-3 pattern-list-item">{{ pattern }}</div>
   {% for key, value in reply_pattern_dict[pattern].items() %}
-  <div class="col-xs-3">{{ value }}</div>
+  <div class="col-xs-3 pattern-list-item">{{ value }}</div>
   {% endfor %}
   <div class="col-xs-1">
     <form>
       <input type="hidden" name="match_pattern" value="{{pattern}}" >
-      <button type="submit" class="delete-btn form-control" style="background: none; padding: 0px; border: none; -webkit-box-shadow: none; box-shadow: none;">
-        <i class="glyphicon glyphicon-minus" style="color:red" ></i>
+      <button type="submit" class="delete-btn form-control">
+        <i class="glyphicon glyphicon-minus" ></i>
       </button>
     </form>
   </div>
@@ -17,14 +30,14 @@
 <div class="row">
   <form class="add-form">
     <div class="col-xs-3 form-group">
-      <input type="text" class="form-control" name="match_pattern" >
+      <input type="text" class="form-control" name="match_pattern" placeholder="マッチするパターン" >
     </div>
     <div class="col-xs-3 form-group">
-      <input type="text" class="form-control" name="reply_text" >
+      <input type="text" class="form-control" name="reply_text" placeholder="返信するメッセージ"  >
     </div>
     <div class="col-xs-1 form-group">
-      <button type="submit" class="col-xs-1 add-btn form-control" style="background: none; padding: 0px; border: none; -webkit-box-shadow: none; box-shadow: none;">
-        <i class="glyphicon glyphicon-plus" style="color:green" ></i>
+      <button type="submit" class="col-xs-1 add-btn form-control">
+        <i class="glyphicon glyphicon-plus"></i>
       </button>
     </div>
   </form>

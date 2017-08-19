@@ -62,6 +62,13 @@ def delete():
     print('save finished')
     return jsonify({'status': 200}), 200
 
+@app.route('/register_token', methods=['POST'])
+def register_token():
+    print('register_token')
+    api_token = request.form['slack_api_token']
+    os.environ['API_TOKEN'] = api_token
+    return jsonify({'status': 200}), 200
+
 @app.route('/content')
 def content():
     render_object = {
@@ -72,6 +79,10 @@ def content():
 @app.route('/js/<path:path>')
 def send_js(path):
     return send_from_directory('js', path)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    return send_from_directory('css', path)
 
 @app.route('/favicon.ico')
 def send_image(path):
