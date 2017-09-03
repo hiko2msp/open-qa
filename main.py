@@ -23,12 +23,11 @@ reply_pattern = ReplyPatternGspread(json.loads(SERVICE_ACCOUNT))
 app = Flask(__name__)
 
 
-
 @app.route('/')
 def index():
     render_object = {
-        'message': 'テストメッセージ',
-        'reply_pattern_dict': reply_pattern.get_pattern()
+        'reply_pattern_dict': reply_pattern.get_pattern(),
+        'current_api_token': os.environ['API_TOKEN'],
     }
     return render_template('index.html', **render_object)
 
@@ -60,15 +59,23 @@ def register_token():
 @app.route('/content')
 def content():
     render_object = {
-        'reply_pattern_dict': reply_pattern.get_pattern()
+        'reply_pattern_dict': reply_pattern.get_pattern(),
+        'current_api_token': os.environ['API_TOKEN'],
     }
     return render_template('pattern_list.html', **render_object), 200
 
 @app.route('/reload', methods=['GET'])
 def reload():
     reply_pattern.load()
+    return '', 200
+
+@app.route('/save', methods=['GET'])
+def save():
+    reply_pattern.save()
+    print('save finished')
     render_object = {
-        'reply_pattern_dict': reply_pattern.get_pattern()
+        'reply_pattern_dict': reply_pattern.get_pattern(),
+        'current_api_token': os.environ['API_TOKEN'],
     }
     return render_template('pattern_list.html', **render_object), 200
 
@@ -97,8 +104,6 @@ def trigger_bot():
             print(e)
             return jsonify({'status': 500}), 500
     else:
-        reply_pattern.save()
-        print('save finished')
         bot_manager.start()
     return jsonify({'status': 200}), 200
 

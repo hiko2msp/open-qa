@@ -107,6 +107,25 @@ $(function() {
       stopload();
     });
   });
+  $(document).on('click', '.save-btn', function(event) {
+    event.preventDefault();
+    startload();
+    console.log('save btn clicked');
+    $.ajax({
+      type: "GET",
+      url: "/save",
+    }).done(function(data) {
+      console.log('save ok');
+      getContent();
+      stopload();
+    }).fail(function(data, textStatus, errorThrown) {
+      console.log('save error');
+      console.log(data);
+      console.log(textStatus);
+      console.log(errorThrown);
+      stopload();
+    });
+  });
 });
 
 function startload() {
