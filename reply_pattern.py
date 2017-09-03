@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import os
 import json
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -65,8 +66,8 @@ class ReplyPatternGspread():
         )
 
         gc = gspread.authorize(credentials)
-        gc.open_by_key('1z6n0eq-Y7Wcss7zQs_KglODJ7RSBTTzvT4uqf8FjqBo')
-        sh = gc.open('ボットの会話')
+        gc.open_by_key(os.environ['SHEET_KEY'])
+        sh = gc.open('BotCommunicationPatterns')
         self.ws = sh.worksheets()[0]
         self.load()
 
