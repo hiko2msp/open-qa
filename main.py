@@ -1,5 +1,5 @@
 import os
-
+import json
 import base64
 import hmac
 import hashlib
@@ -13,23 +13,16 @@ from flask import (
     url_for,
 )
 import html
+from slack.run import BotManager
+from reply_pattern import ReplyPatternGspread
+bot_manager = BotManager()
+SERVICE_ACCOUNT = os.environ.get('SERVICE_ACCOUNT', 'dummy service account')
+reply_pattern = ReplyPatternGspread(json.loads(SERVICE_ACCOUNT))
+
 
 app = Flask(__name__)
 
-APP_CONSUMER_SECRET = os.environ.get('CONSUMER_SECRET', 'dummy secret').encode()
 
-@app.route('/crc', methods=['GET'])
-def crc():
-    crc_token = request.args['crc_token'].encode()
-    print(crc_token)
-    sha256_hash_digest = hmac.new(APP_CONSUMER_SECRET, msg=crc_token, digestmod=hashlib.sha256).digest()
-    print(sha256_hash_digest)
-    return jsonify(
-        response_token=(b'sha256=' + base64.b64encode(sha256_hash_digest)).decode()
-    )
-
-from reply_pattern import ReplyPattern
-reply_pattern = ReplyPattern()
 
 @app.route('/')
 def index():
@@ -47,8 +40,6 @@ def add():
     value = html.escape(request.form['reply_text'])
     print(value)
     reply_pattern.add_pattern(match_pattern, value)
-    reply_pattern.save()
-    print('save finished')
     return jsonify({'status': 200}), 200
 
 @app.route('/delete', methods=['POST'])
@@ -57,8 +48,6 @@ def delete():
     match_pattern = request.form['match_pattern']
     print(match_pattern)
     reply_pattern.delete_pattern(match_pattern)
-    reply_pattern.save()
-    print('save finished')
     return jsonify({'status': 200}), 200
 
 @app.route('/register_token', methods=['POST'])
@@ -83,12 +72,13 @@ def send_js(path):
 def send_css(path):
     return send_from_directory('css', path)
 
-@app.route('/favicon.ico')
+@app.route('/images/<path:path>')
 def send_image(path):
-    return send_from_directory('images', 'favicon.png')
+    return send_from_directory('images', path)
 
-from slack.run import BotManager
-bot_manager = BotManager()
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('images', 'favicon.png')
 
 @app.route('/trigger', methods=['POST'])
 def trigger_bot():
@@ -99,6 +89,8 @@ def trigger_bot():
             print(e)
             return jsonify({'status': 500}), 500
     else:
+        reply_pattern.save()
+        print('save finished')
         bot_manager.start()
     return jsonify({'status': 200}), 200
 

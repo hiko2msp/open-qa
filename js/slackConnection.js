@@ -50,6 +50,7 @@ $(function() {
   $(document).on('click', '.trigger-btn', function(event) {
     event.preventDefault();
     console.log('trigger clicked');
+    startload();
     $.ajax({
       type: "POST",
       url: "/trigger",
@@ -61,11 +62,13 @@ $(function() {
       } else {
         $('.trigger-btn').text('bot起動');
       }
+      stopload();
     }).fail(function(data, textStatus, errorThrown) {
       console.log('trigger error');
       console.log(data);
       console.log(textStatus);
       console.log(errorThrown);
+      stopload();
     });
   });
   $(document).on('click', '.register-btn', function(event) {
@@ -85,4 +88,28 @@ $(function() {
       console.log(errorThrown);
     });
   });
+});
+
+function startload() {
+    var loader_h = $('#loader').height();
+    $('.loader-wrap').css('display', 'none');
+    $('#loader-bg ,#loader').css('display', 'block');
+    $('#loader').css({
+        'height' : loader_h + 'px',
+        'margin-top' : '-' + loader_h + 'px'
+    });
+    console.log('start loading');
+}
+
+function stopload() {
+    $('.loader-wrap').css('display', 'block');
+    $('#loader-bg').delay(900).fadeOut(800);
+    $('#loader').delay(600).fadeOut(300);
+    console.log('stop loading');
+}
+
+$(window).load(function() {
+    $('#loader-bg').delay(900).fadeOut(800);
+    $('#loader').delay(600).fadeOut(300);
+    $('.loader-wrap').css('display', 'block');
 });

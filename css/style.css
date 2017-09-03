@@ -24,3 +24,24 @@
 .trigger-btn:disabled {
   color: #e3e3e3;
 }
+
+#loader-bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: black;
+  z-index: 1;
+}
+
+#loader-bg #loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  margin-left: -250px;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
