@@ -88,6 +88,25 @@ $(function() {
       console.log(errorThrown);
     });
   });
+  $(document).on('click', '.reload-btn', function(event) {
+    event.preventDefault();
+    startload();
+    console.log('reload btn clicked');
+    $.ajax({
+      type: "GET",
+      url: "/reload",
+    }).done(function(data) {
+      console.log('reload ok');
+      getContent();
+      stopload();
+    }).fail(function(data, textStatus, errorThrown) {
+      console.log('reload error');
+      console.log(data);
+      console.log(textStatus);
+      console.log(errorThrown);
+      stopload();
+    });
+  });
 });
 
 function startload() {

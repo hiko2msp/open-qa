@@ -68,11 +68,7 @@ class ReplyPatternGspread():
         gc.open_by_key('1z6n0eq-Y7Wcss7zQs_KglODJ7RSBTTzvT4uqf8FjqBo')
         sh = gc.open('ボットの会話')
         self.ws = sh.worksheets()[0]
-        self.pattern = ReplyPatternGspread.create_reply_pattern_from_worksheet(self.ws)
-        self.row_length = max(
-            len([acell.value for acell in self.ws.range('A2:A100') if acell.value]),
-            len([acell.value for acell in self.ws.range('B2:B100') if acell.value])
-        )
+        self.load()
 
     @staticmethod
     def create_reply_pattern_from_worksheet(ws):
@@ -105,6 +101,13 @@ class ReplyPatternGspread():
 
     def get_pattern(self):
         return self.pattern
+
+    def load(self):
+        self.pattern = ReplyPatternGspread.create_reply_pattern_from_worksheet(self.ws)
+        self.row_length = max(
+            len([acell.value for acell in self.ws.range('A2:A100') if acell.value]),
+            len([acell.value for acell in self.ws.range('B2:B100') if acell.value])
+        )
 
     def save(self):
         new_row_length = max(self.row_length, self.get_pattern_len())

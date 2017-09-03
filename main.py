@@ -64,6 +64,14 @@ def content():
     }
     return render_template('pattern_list.html', **render_object), 200
 
+@app.route('/reload', methods=['GET'])
+def reload():
+    reply_pattern.load()
+    render_object = {
+        'reply_pattern_dict': reply_pattern.get_pattern()
+    }
+    return render_template('pattern_list.html', **render_object), 200
+
 @app.route('/js/<path:path>')
 def send_js(path):
     return send_from_directory('js', path)
