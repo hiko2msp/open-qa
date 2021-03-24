@@ -15,7 +15,7 @@ pyasn1==0.3.2
 pyasn1-modules==0.0.11
 requests==2.18.3
 requests-oauthlib==0.8.0
-rsa==3.4.2
+rsa==4.1
 six==1.10.0
 slackbot==0.5.1
 slacker==0.9.50
